@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'time_pontos',
             'time_partidas_jogadas',
             'time_vitorias',
-            //'time_empates',
+            'temporada',
             //'time_derrotas',
             //'time_gols_marcados',
             //'time_gols_sofridos',

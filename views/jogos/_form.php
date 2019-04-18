@@ -74,6 +74,9 @@ use yii\helpers\ArrayHelper;
                         )->label('Status'); ?>
                     </div>
                 </div>
+                <div class="col-sm-2">
+                    <?= $form->field($model, 'temporada')->textInput(['type' => 'number'])->label('Temporada'); ?>
+                </div>
             </div>
         </div>
     </div>

@@ -85,11 +85,11 @@ use yii\grid\GridView;
 
 <div class="jogos-index" id="conteudo-index">
 
-    <?php if(Yii::$app->getUser()->id == 1){ ?>
+    <?php //if(Yii::$app->getUser()->id == 1){ ?>
     <p style="text-align: center;">
         <?= Html::a('Cadastrar Jogo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php }?>
+    <?php //}?>
 
 
     <?= GridView::widget([
@@ -115,7 +115,7 @@ use yii\grid\GridView;
                 'filter'   => Html::activeDropDownList($searchModel, 'status_jogo', ArrayHelper::map(\app\models\StatusJogo::find()->asArray()->orderBy('status_jogo_dsc')->all(), 'status_jogo_id', 'status_jogo_dsc'), array('class'=>'form-control', 'prompt' => ' '))
             ],
             'jogo_turno',
-
+            'temporada',
             ['class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width: 8.7%'],
                 'template' => '{view} {update} {delete} ',
@@ -125,16 +125,16 @@ use yii\grid\GridView;
                     },
 
                     'update' => function ($model, $key) {
-                        if(Yii::$app->getUser()->id == 1){
+                      //  if(Yii::$app->getUser()->id == 1){
                             return Html::a('<span  class="glyphicon glyphicon-pencil" style="color: darkblue; width:20%; font-size: 1.2em; margin-left: 6%"></span>', ['update', 'id' =>$key->jogo_id ],['title' => 'Alterar']);
-                        }
+                       // }
                     },
                     'delete' => function ($model, $key) {
-                        if(Yii::$app->getUser()->id == 1){
+                        /*if(Yii::$app->getUser()->id == 1){*/
                             return Html::a('<span class="glyphicon glyphicon-trash" style="color: red; font-size: 1.2em; margin-left: 3%"></span>', ['empenho-liberar', 'id' =>$key->jogo_id],[
                                 'title' => 'Deletar'
                             ]);
-                        }
+                        //}
                     }
                 ]
             ]

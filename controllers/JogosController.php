@@ -102,8 +102,8 @@ class JogosController extends Controller
                 $derTimeCasa = 1;
                 $derVisitante = 0;
             }
-            $modelTabelaDaCasa = Tabela::findOne($modelTabela::find()->where(['time_id'=> $model->time_id_casa])->asArray()->all()[0]['tabela_id']);
-            $modelTabelaVisitante = Tabela::findOne($modelTabela::find()->where(['time_id'=> $model->time_id_visitante])->asArray()->all()[0]['tabela_id']);
+            $modelTabelaDaCasa = Tabela::findOne($modelTabela::find()->where(['time_id'=> $model->time_id_casa])->andWhere(['temporada'=> 2])->asArray()->all()[0]['tabela_id']);
+            $modelTabelaVisitante = Tabela::findOne($modelTabela::find()->where(['time_id'=> $model->time_id_visitante])->andWhere(['temporada'=> 2])->asArray()->all()[0]['tabela_id']);
 
             // TIME DA CASA
             $modelTabelaDaCasa->time_pontos = $modelTabelaDaCasa->time_pontos + $pontosTimeCasa;
@@ -126,9 +126,10 @@ class JogosController extends Controller
             $modelTabelaVisitante->time_gols_sofridos = $modelTabelaVisitante->time_gols_sofridos + $model->placar_casa;
             $modelTabelaVisitante->time_gols_saldo = $modelTabelaVisitante->time_gols_marcados - $modelTabelaVisitante->time_gols_sofridos;
 
+
+
             $modelTabelaDaCasa->save();
             $modelTabelaVisitante->save();
-
         }
 
     }
@@ -163,19 +164,42 @@ class JogosController extends Controller
 
     public function actionCriarMultiplosJogos(){
         $model  = new Jogos();
+        $timeAtual = 2;
 
         $timeAdversario = Times::find()->where(['not in','time_id',[1]])->andWhere(['time_status' => 0])->asArray()->all();
         foreach ($timeAdversario as $key){
-            $validaJogoTime = Jogos::find()
 
-            $model->placar_casa = 1;
-            $model->time_id_visitante = $key['time_id'];
+
+            $qtdJogo = Jogos::find()->where(['not in','time_id_visitante',[1]])
+                                    ->andWhere(['not in','time_id_casa',[1]])
+                                    ->andWhere(['temporada' => 2])
+                                    ->all();
+
+            echo "<pre>";
+            print_r($key);
+            die();
+            if($qtdJogo == 0){
+                $model->jogo_id = $model->jogo_id = is_null($model::find()->orderBy(['jogo_id'=>SORT_DESC])->one()) ? 1 : $model::find()->orderBy(['jogo_id'=>SORT_DESC])->one()['jogo_id'] + 1 ;
+                $model->time_id_visitante = $key['time_id'];
+
+                //time
+                $model->time_id_casa = $timeAtual;
+
+                $model->status_jogo = 1;
+                $model->jogo_turno = 1;
+                $model->temporada = 2;
+                echo "<pre>";
+                print_r($model);
+              //  $model->save();
+            }
+
+
+
+
 
         }
 
-        echo "<pre>";
 
-        print_r($timeAdversario);
 
 
 
