@@ -14,6 +14,7 @@ use Yii;
  * @property string $usuario_senha
  * @property string $usuario_foto
  * @property int $time_id
+ * @property int $usuario_permissao
  * @property int $usuario_acesso
  */
 class Usuario extends \yii\db\ActiveRecord
@@ -34,7 +35,7 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return [
             [['usuario_nome', 'usuario_login', 'usuario_senha'], 'required'],
-            [['usuario_status', 'time_id'], 'integer'],
+            [['usuario_status', 'time_id', 'usuario_permissao'], 'integer'],
             [['usuario_senha', 'usuario_foto', 'usuario_acesso'], 'string'],
             [['usuario_nome'], 'string', 'max' => 45],
             [['usuario_login'], 'string', 'max' => 50],
@@ -60,6 +61,7 @@ class Usuario extends \yii\db\ActiveRecord
             'usuario_foto' => 'Usuario Foto',
             'usuario_acesso' => 'Acesso',
             'time_id' => 'Time ID',
+            'usuario_permissao' => 'Permissão',
         ];
     }
 }

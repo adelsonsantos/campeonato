@@ -68,8 +68,6 @@ class TabelaController extends Controller
 
 
         $times = Times::find()->where(['time_status' => 0])->asArray()->all();
-        echo "<pre>";
-        //print_r($times);
         foreach ($times as $key){
             $model = new Tabela();
             $model->tabela_id = $model::find()->orderBy(['tabela_id'=>SORT_DESC])->one()['tabela_id'] + 1;
@@ -85,7 +83,7 @@ class TabelaController extends Controller
             $model->tabela_turno = 0;
             $model->status = 0;
             $model->temporada = 2;
-         //   $model->save();
+            $model->save();
         }
 
         if ($model->load(Yii::$app->request->post())) {

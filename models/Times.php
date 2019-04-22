@@ -53,4 +53,9 @@ class Times extends \yii\db\ActiveRecord
             'image' => 'image'
         ];
     }
+
+    public function validaPermissao(){
+        $permissaousuario = Usuario::find()->where(['usuario_id' => Yii::$app->getUser()->id])->andwhere(['usuario_permissao' => 2])->asArray()->one();
+        return !empty($permissaousuario) ? true : false;
+    }
 }
