@@ -84,7 +84,7 @@ class Jogos extends \yii\db\ActiveRecord
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
-                    //ActiveRecord::EVENT_BEFORE_INSERT => 'creation_time',
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'jogo_data',
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'jogo_data',
                 ],
                 'value' => function() {
