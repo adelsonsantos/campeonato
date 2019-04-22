@@ -1,6 +1,6 @@
 <style>
     body {
-        background: url('http://localhost/campeonato/image/PESMobile.jpg') fixed;
+        background: url('http://campeonatopesnarandiba.com.br/image/PESMobile.jpg') fixed;
         background-size: cover;
         padding: 0;
         margin: 0;
