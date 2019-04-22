@@ -45,7 +45,7 @@ use yii\helpers\ArrayHelper;
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <?= $form->field($model, 'time_id_casa')->dropDownList(ArrayHelper::map(\app\models\Times::find()->where(['time_stauts' => 0])->asArray()->orderBy('time_nome')->all(), 'time_id', 'time_nome'))->label('Time da Casa'); ?>
+                        <?= $form->field($model, 'time_id_casa')->dropDownList(ArrayHelper::map(\app\models\Times::find()->where(['time_status' => 0])->asArray()->orderBy('time_nome')->all(), 'time_id', 'time_nome'))->label('Time da Casa'); ?>
                     </div>
                     <div class="col-sm-2">
                         <?= $form->field($model, 'placar_casa')->textInput(['type' => 'number']) ?>
@@ -54,7 +54,7 @@ use yii\helpers\ArrayHelper;
                         <?= $form->field($model, 'placar_visitante')->textInput(['type' => 'number']) ?>
                     </div>
                     <div class="col-sm-3">
-                        <?= $form->field($model, 'time_id_visitante')->dropDownList(ArrayHelper::map(\app\models\Times::find()->where(['time_stauts' => 0])->asArray()->orderBy('time_nome')->all(), 'time_id', 'time_nome'))->label('Time Visitante');
+                        <?= $form->field($model, 'time_id_visitante')->dropDownList(ArrayHelper::map(\app\models\Times::find()->where(['time_status' => 0])->asArray()->orderBy('time_nome')->all(), 'time_id', 'time_nome'))->label('Time Visitante');
                         ?>
                     </div>
 

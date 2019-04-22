@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\UnijorgeUsuario */
+/* @var $model app\models\Usuario */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

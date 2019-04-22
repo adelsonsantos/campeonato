@@ -46,12 +46,14 @@ use yii\widgets\DetailView;
                 <th class="borda" style="width: 25%">CPF</th>
                 <th class="borda" style="width: 25%">Status</th>
                 <th class="borda" style="width: 25%">Senha</th>
+                <th class="borda" style="width: 25%">Permissão</th>
             </tr>
             <tr>
                 <td class="borda" style="width: 25%"><?= $model->usuario_nome; ?></td>
                 <td class="borda" style="width: 25%"><?= $model->usuario_login; ?></td>
                 <td class="borda" style="width: 25%"><?= "Ativo"; ?></td>
                 <td class="borda" style="width: 25%"><?= $model->usuario_senha; ?></td>
+                <td class="borda" style="width: 25%"><?= $model->usuario_permissao; ?></td>
             </tr>
         </table>
     </div>

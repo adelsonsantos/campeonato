@@ -88,7 +88,7 @@ $model = new \app\models\Usuario();
 
     <?php if($model->validaPermissao()){ ?>
         <p style="text-align: center">
-            <?= Html::a('Cadastrar Time', ['create'], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Cadastrar Jogos', ['create'], ['class' => 'btn btn-success']) ?>
         </p>
     <?php }?>
 
