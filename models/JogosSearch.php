@@ -49,6 +49,7 @@ class JogosSearch extends Jogos
         ]);
 
         $this->load($params);
+        $query->andFilterWhere(['temporada' => 2]);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
