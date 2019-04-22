@@ -2,14 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\Jogos;
+use app\models\JogosSearch;
 use app\models\Tabela;
 use app\models\Times;
 use Yii;
-use app\models\Jogos;
-use app\models\JogosSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * JogosController implements the CRUD actions for Jogos model.
@@ -139,6 +139,16 @@ class JogosController extends Controller
     }
 
     /**
+     * @param $model
+     */
+    public function validaCadastroJogo($model){
+        $validacao1 = Jogos::find()->where(['time_id_casa' => $model->time_id_casa])->andWhere(['time_id_visitante' => $model->time_id_visitante])->andWhere(['jogo_turno' => $model->jogo_turno])->andwhere(['temporada' => 2])->asArray()->count();
+        $validacao2 = Jogos::find()->where(['time_id_casa' => $model->time_id_visitante])->andWhere(['time_id_visitante' => $model->time_id_casa])->andWhere(['jogo_turno' => $model->jogo_turno])->andwhere(['temporada' => 2])->asArray()->count();
+
+        return ($validacao1 + $validacao2) == 0 ? true : false;
+    }
+
+    /**
      * Creates a new Jogos model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -147,13 +157,15 @@ class JogosController extends Controller
     {
         $model = new Jogos();
 
-
         if ($model->load(Yii::$app->request->post()) && ($model->time_id_visitante != $model->time_id_casa)) {
             $model->jogo_id = is_null($model::find()->orderBy(['jogo_id'=>SORT_DESC])->one()) ? 1 : $model::find()->orderBy(['jogo_id'=>SORT_DESC])->one()['jogo_id'] + 1 ;
-
-           $this->atualizaTabela($model);
-            $model->save();
-            return $this->redirect(['index']);
+            if($this->validaCadastroJogo($model)){
+                $this->atualizaTabela($model);
+                $model->save();
+                return $this->redirect(['index']);
+            }else{
+                throw new \yii\web\HttpException(405, 'Jogo já cadastrado');
+            }
         }
 
         return $this->render('create', [

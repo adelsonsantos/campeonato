@@ -81,15 +81,16 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\JogosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$model = new \app\models\Usuario();
 ?>
 
 <div class="jogos-index" id="conteudo-index">
 
-    <?php //if(Yii::$app->getUser()->id == 1){ ?>
-    <p style="text-align: center;">
-        <?= Html::a('Cadastrar Jogo', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <?php //}?>
+    <?php if($model->validaPermissao()){ ?>
+        <p style="text-align: center">
+            <?= Html::a('Cadastrar Time', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    <?php }?>
 
 
     <?= GridView::widget([
@@ -125,16 +126,18 @@ use yii\grid\GridView;
                     },
 
                     'update' => function ($model, $key) {
-                      //  if(Yii::$app->getUser()->id == 1){
+                    $model = new \app\models\Usuario();
+                    if($model->validaPermissao()){
                             return Html::a('<span  class="glyphicon glyphicon-pencil" style="color: darkblue; width:20%; font-size: 1.2em; margin-left: 6%"></span>', ['update', 'id' =>$key->jogo_id ],['title' => 'Alterar']);
-                       // }
+                        }
                     },
                     'delete' => function ($model, $key) {
-                        /*if(Yii::$app->getUser()->id == 1){*/
+                    $model = new \app\models\Usuario();
+                    if($model->validaPermissao()){
                             return Html::a('<span class="glyphicon glyphicon-trash" style="color: red; font-size: 1.2em; margin-left: 3%"></span>', ['empenho-liberar', 'id' =>$key->jogo_id],[
                                 'title' => 'Deletar'
                             ]);
-                        //}
+                        }
                     }
                 ]
             ]

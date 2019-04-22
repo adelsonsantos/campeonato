@@ -52,7 +52,10 @@ use yii\widgets\MaskedInput;
                         <?= $form->field($model, 'usuario_login')->textInput(['maxlength' => true]) ?>
                     </div>
                     <div class="col-sm-3">
-                        <?= $form->field($model, 'time_id')->dropDownList(ArrayHelper::map(\app\models\Times::find()->asArray()->orderBy('time_nome')->all(), 'time_id', 'time_nome'))->label('Time da Casa'); ?>
+                        <?= $form->field($model, 'time_id')->dropDownList(ArrayHelper::map(\app\models\Times::find()->where(['time_status' => 0])->asArray()->orderBy('time_nome')->all(), 'time_id', 'time_nome'))->label('Time da Casa'); ?>
+                    </div>
+                    <div class="col-sm-2">
+                        <?= $form->field($model, 'usuario_permissao')->dropDownList([1 =>'Padrão', 2 => 'Administrador'])->label('Perfil'); ?>
                     </div>
                 </div>
                 <br>

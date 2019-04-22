@@ -64,4 +64,9 @@ class Usuario extends \yii\db\ActiveRecord
             'usuario_permissao' => 'Permissão',
         ];
     }
+
+    public function validaPermissao(){
+        $permissaousuario = Usuario::find()->where(['usuario_id' => Yii::$app->getUser()->id])->andwhere(['usuario_permissao' => 2])->asArray()->one();
+        return !empty($permissaousuario) ? true : false;
+    }
 }

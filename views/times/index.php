@@ -82,7 +82,7 @@ use yii\grid\GridView;
 /* @var $modelTimes app\models\Times */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$model = new \app\models\Times();
+$model = new \app\models\Usuario();
 ?>
 <div class="times-index" id="conteudo-index">
 
@@ -124,11 +124,13 @@ $model = new \app\models\Times();
                     },
 
                     'update' => function ($model, $key) {
+                        $model = new \app\models\Usuario();
                         if($model->validaPermissao()){
                             return Html::a('<span  class="glyphicon glyphicon-pencil" style="color: darkblue; width:20%; font-size: 1.2em; margin-left: 6%"></span>', ['update', 'id' =>$key->time_id ],['title' => 'Alterar']);
                         }
                     },
                     'delete' => function ($model, $key) {
+                        $model = new \app\models\Usuario();
                         if($model->validaPermissao()){
                             return Html::a('<span class="glyphicon glyphicon-trash" style="color: red; font-size: 1.2em; margin-left: 3%"></span>', ['empenho-liberar', 'id' =>$key->time_id],[
                                 'title' => 'Deletar'

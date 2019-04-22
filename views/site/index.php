@@ -142,7 +142,7 @@ $meusJogos = Jogos::find()->joinWith(
                 $contadorCor++;
                 if($contadorCor <= 4){
                     $cor = $corClassificado;
-                }elseif($contadorCor < 17 ){
+                }elseif($contadorCor < 11 ){
                     $cor = $corPadrao;
                 }else{
                     $cor = $corRebaixado;
