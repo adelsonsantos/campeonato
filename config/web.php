@@ -33,8 +33,10 @@ $config = [
 					]
 				]
 			],
-			
-	
+
+        'session' => [
+            'timeout' => 10,
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'juBoWkRDf63UTEmvl9MGEP-wFbVzKpMo',
@@ -44,7 +46,9 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
+            'authTimeout' => 10,
+            'loginUrl' => 'admin/default/login' // set your login path here
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
