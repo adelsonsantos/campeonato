@@ -23,23 +23,21 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'logout','view','create','update','delete'],
+                'only' => ['login', 'logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'logout','view','create','update','delete'],
                         'allow' => true,
+                        'actions' => ['index','login', 'contact'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
                         'roles' => ['@'],
                     ],
                 ],
             ],
         ];
-    }
-
-    public function beforeAction($action){
-
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['site/login'])->send();  // login path
-        }
     }
 
     /**
@@ -77,6 +75,25 @@ class SiteController extends Controller
             'dataProvider' => $dataProvider,
             'tabela' => $tabela
         ]);
+    }
+
+    public function actionAlertOutsideFence()
+    {
+        return $this->render('alert_outside_fence');
+        /*if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $searchname= explode(":", $data['searchname']);
+            $searchby= explode(":", $data['searchby']);
+            $searchname= $searchname[0];
+            $searchby= $searchby[0];
+            $search = // your logic;
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return [
+                'search' => $search,
+                'code' => 100,
+            ];
+        }*/
+
     }
 
     /**
