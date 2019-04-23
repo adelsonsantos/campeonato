@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use app\models\Times;
 use app\models\TimesSearch;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -23,25 +22,12 @@ class TimesController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index','view','create','update','delete'],
-                'rules' => [
-                    [
-                        'actions' => ['index','view','create','update','delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
                 ],
             ],
         ];
-    }
-
-    public function beforeAction($action){
-
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['site/login'])->send();  // login path
-        }
     }
 
     /**

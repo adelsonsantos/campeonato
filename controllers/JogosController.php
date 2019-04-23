@@ -7,7 +7,6 @@ use app\models\JogosSearch;
 use app\models\Tabela;
 use app\models\Times;
 use Yii;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -23,25 +22,13 @@ class JogosController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index','view','create','update','delete'],
-                'rules' => [
-                    [
-                        'actions' => ['index','view','create','update','delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
             ],
         ];
-    }
-
-    public function beforeAction($action){
-
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['site/login'])->send();  // login path
-        }
     }
 
     /**

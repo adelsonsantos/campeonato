@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use app\models\Usuario;
 use app\models\UsuarioSearch;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,25 +20,13 @@ class UsuarioController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index', 'logout','view','create','update','delete'],
-                'rules' => [
-                    [
-                        'actions' => ['index', 'logout','view','create','update','delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
                 ],
             ],
         ];
-    }
-
-    public function beforeAction($action){
-
-        if (Yii::$app->user->isGuest){
-            return $this->redirect(['site/login'])->send();  // login path
-        }
     }
 
     /**
@@ -103,8 +90,7 @@ class UsuarioController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->usuario_senha = sha1($model->usuario_senha);
             $model->usuario_senha_repeat = sha1($model->usuario_senha_repeat);
-            /*print_r($model->usuario_senha);
-            die();*/
+
             $model->save();
             return $this->redirect(['view', 'id' => $model->usuario_id]);
         }
