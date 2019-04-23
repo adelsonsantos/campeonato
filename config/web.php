@@ -35,7 +35,7 @@ $config = [
 			],
 
         'session' => [
-            'timeout' => 10,
+            'timeout' => 10000000000,
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -47,7 +47,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => false,
-            'authTimeout' => 10,
+            'authTimeout' => 10000000000,
             'loginUrl' => 'admin/default/login' // set your login path here
         ],
         'errorHandler' => [
