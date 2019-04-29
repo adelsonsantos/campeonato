@@ -7,45 +7,30 @@ use yii\helpers\Html;
 
 $this->title = 'Campeonato PES Narandiba';
 
+$tabelaClass = new \app\models\Tabela();
 
-$tabela = \app\models\Tabela::find()->joinWith('times')->orderBy(
-    [
-        'time_pontos' => SORT_DESC,
-        'time_partidas_jogadas' => SORT_DESC,
-        'time_vitorias' => SORT_DESC,
-        'time_empates' => SORT_DESC,
-        'time_derrotas' => SORT_DESC,
-        'time_gols_marcados' => SORT_DESC,
-        'time_gols_sofridos' => SORT_DESC,
-        'time_gols_saldo' => SORT_DESC,
-        'times.time_nome' => SORT_ASC
-    ]
-)->asArray()->where(['temporada' => 2])->all();
-
-$jogos = Jogos::find()->joinWith(
-    [
-        'timecasa' => function ($q) {
-            $q->from('campeonato.times tms');
-        }
-    ])->joinWith([
-    'timevisitante' => function ($q) {
-        $q->from('campeonato.times tme');
-    }])->asArray()->where(['status_jogo' => 2])->andWhere(['temporada' => 2])->orderBy(['jogo_data' => SORT_DESC])->limit(5)->all();
+$tabela = $tabelaClass->getTabelaPorTemporada(2);
+$jogos = $tabelaClass->getUltimosJogos(2, 2, 5);
+$meusJogos = $tabelaClass->getMeusUltimosJogos(2, 2, 5);
 
 
-$idTime = \app\models\Usuario::find()->where(['usuario_id'=>Yii::$app->getUser()->id])->one()->time_id;
+$teste = "
+select DISTINCT
+ta.tabela_id, 
+ta.time_id,
+ta.time_pontos,
+j1.jogo_id,
+j1.time_id_casa,
+j1.placar_casa,
+j1.time_id_visitante,
+j1.placar_visitante
 
-$meusJogos = Jogos::find()->joinWith(
-    [
-        'timecasa' => function ($q) {
-            $q->from('campeonato.times tms');
-        }
-    ])->joinWith([
-    'timevisitante' => function ($q) {
-        $q->from('campeonato.times tme');
-    }])->asArray()->where(['status_jogo' => 2])->andWhere(['time_id_casa' => $idTime])->orWhere(['time_id_visitante' => $idTime])->andWhere(['temporada' => 2])->orderBy(['jogo_data' => SORT_DESC])->limit(5)->all();
-
-
+from tabela ta 
+join times ti on ti.time_id = ta.time_id
+join jogos j1 on ti.time_id = j1.time_id_casa
+join jogos j2 on ti.time_id = j2.time_id_visitante
+where ta.temporada = 2 and ta.time_id = 1 and j1.temporada = 2 and j2.temporada = 2
+order by j1.jogo_data desc";
 ?>
 
 <style>
@@ -149,7 +134,6 @@ $meusJogos = Jogos::find()->joinWith(
                 }
 
 
-
                 ?>
                 <tr>
                     <td width="5px" style="background-color: <?php echo $cor; ?>"></td>
@@ -176,7 +160,6 @@ $meusJogos = Jogos::find()->joinWith(
         <div class="row" style=" margin-left: 5px;  font-weight: bold;">ULTIMOS 5 JOGOS</div>
         <table id="jogos" class="table table-dark">
             <tr>
-
                 <th style="text-align:center">Casa</th>
                 <th style="text-align:center">Placar</th>
                 <th style="text-align:center">vs</th>
@@ -193,7 +176,6 @@ $meusJogos = Jogos::find()->joinWith(
                     <td style="text-align:center"><?= $value['placar_visitante'] ?></td>
                     <td style="text-align:center"><?= Html::img('data:image/png;base64,' . $value['timevisitante']['time_foto'],
                             ['width' => '50px', 'height' => '50px']) ?></td>
-
                 </tr>
             <?php }
             ?>
@@ -207,7 +189,6 @@ $meusJogos = Jogos::find()->joinWith(
         <div class="row" style="margin-left: 5px;  font-weight: bold;">MEUS ULTIMOS 5 JOGOS</div>
         <table id="jogos"  class="table table-dark">
             <tr>
-
                 <th style="text-align:center">Casa</th>
                 <th style="text-align:center">Placar</th>
                 <th style="text-align:center">vs</th>
@@ -224,7 +205,6 @@ $meusJogos = Jogos::find()->joinWith(
                     <td style="text-align:center"><?= $value['placar_visitante'] ?></td>
                     <td style="text-align:center"><?= Html::img('data:image/png;base64,' . $value['timevisitante']['time_foto'],
                             ['width' => '50px', 'height' => '50px']) ?></td>
-
                 </tr>
             <?php }
             ?>

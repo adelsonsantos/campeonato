@@ -38,7 +38,7 @@ class Tabela extends \yii\db\ActiveRecord
     {
         return [
             [['tabela_id', 'time_id', 'temporada'], 'required'],
-            [['tabela_id', 'time_id', 'time_pontos', 'time_partidas_jogadas', 'time_vitorias', 'time_empates', 'time_derrotas', 'time_gols_marcados', 'time_gols_sofridos', 'time_gols_saldo', 'tabela_turno', 'status', 'temporada' ], 'integer'],
+            [['tabela_id', 'time_id', 'time_pontos', 'time_partidas_jogadas', 'time_vitorias', 'time_empates', 'time_derrotas', 'time_gols_marcados', 'time_gols_sofridos', 'time_gols_saldo', 'tabela_turno', 'status', 'temporada'], 'integer'],
             [['tabela_id'], 'unique'],
             [['time_id'], 'exist', 'skipOnError' => true, 'targetClass' => Times::className(), 'targetAttribute' => ['time_id' => 'time_id']],
         ];
@@ -73,4 +73,77 @@ class Tabela extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Times::className(), ['time_id' => 'time_id']);
     }
+
+    public function getJogosVisitante()
+    {
+        return $this->hasMany(Jogos::className(), ['time_id_visitante' => 'time_id']);
+    }
+
+    public function getJogosCasa()
+    {
+        return $this->hasMany(Jogos::className(), ['time_id_casa' => 'time_id']);
+    }
+
+    public function getUltimosJogos($statusJogo, $temporada, $limit){
+        $jogos = Jogos::find()->joinWith(
+            [
+                'timecasa' => function ($q) {
+                    $q->from('campeonato.times tms');
+                }
+            ])->joinWith([
+                'timevisitante' => function ($q) {
+                    $q->from('campeonato.times tme');
+            }]) ->asArray()
+                ->where(['status_jogo' => $statusJogo])
+                ->andWhere(['temporada' => $temporada])
+                ->orderBy(['jogo_data' => SORT_DESC])
+                ->limit($limit)
+                ->all();
+
+        return $jogos;
+    }
+
+    public function getTabelaPorTemporada($temporadaId)
+    {
+        $tabela = \app\models\Tabela::find()->joinWith('times')->orderBy(
+            [
+                'time_pontos' => SORT_DESC,
+                'time_partidas_jogadas' => SORT_DESC,
+                'time_vitorias' => SORT_DESC,
+                'time_empates' => SORT_DESC,
+                'time_derrotas' => SORT_DESC,
+                'time_gols_marcados' => SORT_DESC,
+                'time_gols_sofridos' => SORT_DESC,
+                'time_gols_saldo' => SORT_DESC,
+                'times.time_nome' => SORT_ASC
+            ]
+        )->asArray()->where(['temporada' => $temporadaId])->all();
+
+        return $tabela;
+    }
+
+    public function getMeusUltimosJogos($statusJogo, $temporada, $limit){
+        $idTime = \app\models\Usuario::find()->where(['usuario_id'=>Yii::$app->getUser()->id])->one()->time_id;
+
+        $meusJogos = Jogos::find()->joinWith(
+            [
+                'timecasa' => function ($q) {
+                    $q->from('campeonato.times tms');
+                }
+            ])->joinWith([
+                'timevisitante' => function ($q) {
+                    $q->from('campeonato.times tme');
+            }]) ->asArray()
+                ->where(['status_jogo' => $statusJogo])
+                ->andWhere(['time_id_casa' => $idTime])
+                ->orWhere(['time_id_visitante' => $idTime])
+                ->andWhere(['temporada' => $temporada])
+                ->orderBy(['jogo_data' => SORT_DESC])
+                ->limit($limit)
+                ->all();
+
+     return $meusJogos;
+    }
+
+
 }

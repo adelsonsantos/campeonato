@@ -88,9 +88,13 @@ class Jogos extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'jogo_data',
                 ],
                 'value' => function() {
-                            return date('Y-m-d H:i:s');
-                        },
-                    ],
-                    ];
-                }
+                    return date('Y-m-d H:i:s');
+                },
+            ],
+        ];
+    }
 }
+
+$ultimosJogos = [
+    0 => ['label' =>'Abelha Pikadora 2 x 0 Vasco', 'cor' => 'green']
+];
