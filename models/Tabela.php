@@ -147,3 +147,17 @@ class Tabela extends \yii\db\ActiveRecord
 
 
 }
+
+
+$tt = "select j.jogo_id,
+j.time_id_casa,
+j.placar_casa,
+j.time_id_visitante,
+j.placar_visitante,
+j.jogo_data,
+t1.time_nome,
+t2.time_nome
+from jogos j 
+join times t1 on j.time_id_casa = t1.time_id
+join times t2 on j.time_id_visitante = t2.time_id
+WHERE status_jogo = 2 and (j.time_id_casa = 1 or j.time_id_visitante = 1) and temporada = 2";
