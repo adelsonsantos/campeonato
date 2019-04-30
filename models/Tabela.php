@@ -145,19 +145,129 @@ class Tabela extends \yii\db\ActiveRecord
      return $meusJogos;
     }
 
+    public function getCorUltimosJogos($timeId, $temporada, $statusJogo, $limite){
+        $sql = "select 
+            j.jogo_id,
+            j.time_id_casa,
+            j.placar_casa,
+            j.time_id_visitante,
+            j.placar_visitante,
+            j.jogo_data,
+            t1.time_nome,
+            t2.time_nome,
+            CASE
+            WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   >  j.placar_visitante THEN '#3AA757' 
+            WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   <  j.placar_visitante THEN '#3AA757'
+            WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   =  j.placar_visitante THEN '#9AA0A6'
+            WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   =  j.placar_visitante THEN '#9AA0A6'
+            WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   <  j.placar_visitante THEN '#EA4335'
+            WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   >  j.placar_visitante THEN '#EA4335'
+            ELSE '#9AA0A6'
+        END AS cor
+        from jogos j 
+        join times t1 on j.time_id_casa = t1.time_id
+        join times t2 on j.time_id_visitante = t2.time_id
+        WHERE status_jogo = $statusJogo and (j.time_id_casa = $timeId or j.time_id_visitante = $timeId) and temporada = $temporada
+        order by j.jogo_data desc
+        LIMIT $limite";
 
+      /*  $connection = Yii::$app->getDb();
+        $command = $connection->createCommand($sql)->queryAll();
+        $result = $command->queryAll();*/
+        $list = Yii::app()->db->createCommand($sql)->queryAll();
+    }
+
+    function retornaCorNaTabelaClassificacao($contadorCor)
+    {
+        $corClassificado = "#0af107";
+        $corPadrao = "#909090";
+        $corRebaixado = "#e60101";
+        if ($contadorCor <= 4) {
+            $cor = $corClassificado;
+        } elseif ($contadorCor < 11) {
+            $cor = $corPadrao;
+        } else {
+            $cor = $corRebaixado;
+        }
+        return $cor;
+    }
 }
 
 
-$tt = "select j.jogo_id,
-j.time_id_casa,
-j.placar_casa,
-j.time_id_visitante,
-j.placar_visitante,
-j.jogo_data,
-t1.time_nome,
-t2.time_nome
-from jogos j 
-join times t1 on j.time_id_casa = t1.time_id
-join times t2 on j.time_id_visitante = t2.time_id
-WHERE status_jogo = 2 and (j.time_id_casa = 1 or j.time_id_visitante = 1) and temporada = 2";
+/*
+ * cadastra todos os jogos de todos os times
+ * <?php
+    $times = array(
+        1 => array( 'id'=>1, 'name' => 'abp'),
+        2 => array( 'id'=>2, 'name' => 'ble'),
+        3 => array( 'id'=>3, 'name' => 'bah')
+    );
+    $jogo = array();
+    foreach ($times as $time) {
+        foreach ($times as $time2) {
+            if($time['id'] != $time2['id']){
+
+                $jogo[] =  array('time_casa_id' => $time['id'], 'time_nome'=>$time['name'], 'time_visitante_id'=>$time2['id'], 'time_nome_visitante'=>$time2['name']);
+
+            }
+        }
+    }
+
+    echo "<pre>";
+    print_r($jogo);
+    ?>
+
+
+<?php
+    $contador = 0;
+    $times = array(
+        1 => array( 'id'=>1, 'name' => 'abp'),
+        2 => array( 'id'=>2, 'name' => 'ble'),
+        3 => array( 'id'=>3, 'name' => 'bah'),
+        4 => array( 'id'=>4, 'name' => 'vit')
+    );
+
+    $turno = 1;
+    $jogo = array();
+    foreach ($times as $time) {
+        foreach ($times as $time2) {
+            if($time['id'] != $time2['id']){
+                $contador++;
+
+               if(count($times) <= $contador){
+                   if(count($times)+1 == $contador){
+                       $turno = 1;
+                   }else{
+                       $turno = 2;
+                   }
+               }
+                $jogo[] =  array('time_casa_id' => $time['id'], 'time_nome'=>$time['name'], 'time_visitante_id'=>$time2['id'], 'time_nome_visitante'=>$time2['name'], 'turno'=> $turno);
+
+            }
+        }
+    }
+
+    echo "<pre>";
+   // print_r($jogo);
+
+    foreach ($jogo as $item){
+        if($item['time_nome'] == 'vit' || $item['time_nome_visitante'] == 'vit'){
+            print_r($item);
+        }
+    }
+    ?>
+
+
+
+$('#conteudo_principal').bind('mousewheel', function(e){
+
+             if($('#preenchimento-massa').offset().top <= 194){
+                 $("#botao-fixo").css({ top: '43px' });
+                 $("#preenchimento-massa").css({ top: '60px' });
+             }else{
+                 $("#preenchimento-massa").css({ top: '10px' });
+                 $("#botao-fixo").css({ top: '0' });
+             }
+    });
+
+*/

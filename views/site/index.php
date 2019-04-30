@@ -4,7 +4,7 @@
 
 use app\models\Jogos;
 use yii\helpers\Html;
-
+include_once "style.php";
 $this->title = 'Campeonato PES Narandiba';
 
 $tabelaClass = new \app\models\Tabela();
@@ -32,75 +32,17 @@ join jogos j2 on ti.time_id = j2.time_id_visitante
 where ta.temporada = 2 and ta.time_id = 1 and j1.temporada = 2 and j2.temporada = 2
 order by j1.jogo_data desc";
 ?>
-
-<style>
-    #classificacao table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-
-        font-weight: bold;
-    }
-
-    #classificacao td, th {
-        border: 1px solid #949090;
-        text-align: left;
-        padding: 5px;
-        font-weight: bold;
-        font-size: 25px;
-    }
-
-    #classificacao tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-
-    #classificacao th, .table-dark thead th {
-        border-color: white;
-        color: white;
-        background-color: #222;
-    }
-
-
-    #jogos table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        font-weight: bold;
-    }
-
-    #jogos td, th {
-        border: 1px solid #949090;
-        text-align: left;
-        padding: 5px;
-        font-weight: bold;
-        font-size: 25px;
-    }
-
-    #jogos tr:nth-child(even) {
-        background-color: rgba(221, 221, 221, 0.42);
-    }
-
-    #jogos th, .table-dark thead th {
-        border-color: white;
-        color: white;
-        background-color: #989898;
-    }
-
-    #conteudo-index {
-        padding-left: 130px;
-    }
-
-    #conteudo-itemm {
-        min-width: 250px;
-        max-width: 800px;
-        margin-top: 10px;
-    }
-    #conteudo-item {
-        min-width: 440px;
-        max-width: 250px;
-        margin-top: 10px;
-    }
-</style>
 <div class="row" id="conteudo-index">
-    <?php if(!empty($tabela)){?>
+    <?php /**
+     * @param $contadorCor
+     * @param $corClassificado
+     * @param $corPadrao
+     * @param $corRebaixado
+     * @return mixed
+     */
+
+
+    if(!empty($tabela)){?>
     <div class="col-lg-8" id="conteudo-itemm">
         <div class="row" style=" margin-left: 5px;  font-weight: bold;">CLASSIFICAÇÃO</div>
         <table id="classificacao" style="width:100%;">
@@ -118,23 +60,12 @@ order by j1.jogo_data desc";
                 <th style="text-align:center">SG</th>
             </tr>
             <?php
-            $corClassificado = "#0af107";
-            $corPadrao = "#909090";
-            $corRebaixado = "#e60101";
+
             $contadorCor = 0;
 
             foreach ($tabela as $value) {
                 $contadorCor++;
-                if($contadorCor <= 4){
-                    $cor = $corClassificado;
-                }elseif($contadorCor < 11 ){
-                    $cor = $corPadrao;
-                }else{
-                    $cor = $corRebaixado;
-                }
-
-
-                ?>
+                $cor = $tabelaClass->retornaCorNaTabelaClassificacao($contadorCor); ?>
                 <tr>
                     <td width="5px" style="background-color: <?php echo $cor; ?>"></td>
                     <td width="5px" > <?php echo $contadorCor; ?></td>
