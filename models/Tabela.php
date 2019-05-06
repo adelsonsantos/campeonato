@@ -197,28 +197,34 @@ class Tabela extends \yii\db\ActiveRecord
 
 
 /*
- * cadastra todos os jogos de todos os times
- * <?php
+ * <?php // cadastra todos os jogos de todos os times
     $times = array(
         1 => array( 'id'=>1, 'name' => 'abp'),
         2 => array( 'id'=>2, 'name' => 'ble'),
         3 => array( 'id'=>3, 'name' => 'bah')
     );
-    $jogo = array();
+    $jogo = array( 0 => Array
+        (
+            'time_casa_id' => 1,
+            'time_nome' => 'abp--',
+            'time_visitante_id' => 2,
+            'time_nome_visitante' => 'ble--'
+        ));
     foreach ($times as $time) {
         foreach ($times as $time2) {
             if($time['id'] != $time2['id']){
-
-                $jogo[] =  array('time_casa_id' => $time['id'], 'time_nome'=>$time['name'], 'time_visitante_id'=>$time2['id'], 'time_nome_visitante'=>$time2['name']);
-
+                foreach ($jogo as $jg){
+                    if(($jg['time_casa_id'] != $time['id']) && ($jg['time_visitante_id'] != $time2['id'])){
+                        $jogo[] =  array('time_casa_id' => $time['id'], 'time_nome'=>$time['name'], 'time_visitante_id'=>$time2['id'], 'time_nome_visitante'=>$time2['name']);
+                    }
+                }
             }
         }
     }
 
     echo "<pre>";
     print_r($jogo);
-    ?>
-
+//// fiim
 
 <?php
     $contador = 0;
