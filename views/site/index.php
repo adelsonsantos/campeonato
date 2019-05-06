@@ -12,6 +12,11 @@ $tabelaClass = new \app\models\Tabela();
 $tabela = $tabelaClass->getTabelaPorTemporada(2);
 $jogos = $tabelaClass->getUltimosJogos(2, 2, 5);
 $meusJogos = $tabelaClass->getMeusUltimosJogos(2, 2, 5);
+$res = $tabelaClass->getCorUltimosJogos(2, 2, 2, 5);
+/*
+echo "<pre>";
+print_r($res);
+die;*/
 
 
 $teste = "
@@ -43,7 +48,7 @@ order by j1.jogo_data desc";
 
 
     if(!empty($tabela)){?>
-    <div class="col-lg-8" id="conteudo-itemm">
+    <div class="col-lg-12" id="conteudo-itemm">
         <div class="row" style=" margin-left: 5px;  font-weight: bold;">CLASSIFICAÇÃO</div>
         <table id="classificacao" style="width:100%;">
             <tr>
@@ -58,6 +63,7 @@ order by j1.jogo_data desc";
                 <th style="text-align:center">GP</th>
                 <th style="text-align:center">GC</th>
                 <th style="text-align:center">SG</th>
+                <th style="text-align:center">Ult. Jogos</th>
             </tr>
             <?php
 
@@ -79,6 +85,12 @@ order by j1.jogo_data desc";
                     <td style="text-align:center"><?= $value['time_gols_marcados'] ?></td>
                     <td style="text-align:center"><?= $value['time_gols_sofridos'] ?></td>
                     <td style="text-align:center"><?= $value['time_gols_saldo'] ?></td>
+                    <?php $dadosUltimosJogos = $tabelaClass->getCorUltimosJogos($value['time_id'], 2, 2, 5); ?>
+                    <td style="text-align:center; white-space: nowrap;">
+                        <?php foreach ($dadosUltimosJogos as $item){
+                            echo "<span title='" . $item['casa'] ." ". $item['placar_casa']." vs " . $item['placar_visitante'] ." ". $item['visitante'] ."' class='glyphicon glyphicon-record' style='margin-left: 7px; color:".$item['cor']."'></span>";
+                        }?>
+                    </td>
                 </tr>
             <?php }
             ?>
@@ -88,7 +100,7 @@ order by j1.jogo_data desc";
 
     if(!empty($jogos)){?>
     <div class="col-xs-4" id="conteudo-item">
-        <div class="row" style=" margin-left: 5px;  font-weight: bold;">ULTIMOS 5 JOGOS</div>
+        <div class="row" style=" margin-left: 55px;  font-weight: bold;">ULTIMOS 5 JOGOS</div>
         <table id="jogos" class="table table-dark">
             <tr>
                 <th style="text-align:center">Casa</th>

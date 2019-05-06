@@ -153,13 +153,13 @@ class Tabela extends \yii\db\ActiveRecord
             j.time_id_visitante,
             j.placar_visitante,
             j.jogo_data,
-            t1.time_nome,
-            t2.time_nome,
+            t1.time_nome as casa,
+            t2.time_nome as visitante,
             CASE
             WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   >  j.placar_visitante THEN '#3AA757' 
             WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   <  j.placar_visitante THEN '#3AA757'
-            WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   =  j.placar_visitante THEN '#9AA0A6'
-            WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   =  j.placar_visitante THEN '#9AA0A6'
+            WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   =  j.placar_visitante THEN '#5d5f61'
+            WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   =  j.placar_visitante THEN '#5d5f61'
             WHEN j.time_id_casa       = ".$timeId." and j.placar_casa   <  j.placar_visitante THEN '#EA4335'
             WHEN j.time_id_visitante  = ".$timeId." and j.placar_casa   >  j.placar_visitante THEN '#EA4335'
             ELSE '#9AA0A6'
@@ -171,10 +171,12 @@ class Tabela extends \yii\db\ActiveRecord
         order by j.jogo_data desc
         LIMIT $limite";
 
-      /*  $connection = Yii::$app->getDb();
+        $connection = Yii::$app->getDb();
         $command = $connection->createCommand($sql)->queryAll();
-        $result = $command->queryAll();*/
-        $list = Yii::app()->db->createCommand($sql)->queryAll();
+      //  $result = $command->queryAll();
+       // $list = Yii::app()->db->createCommand($sql)->queryAll();
+
+        return $command;
     }
 
     function retornaCorNaTabelaClassificacao($contadorCor)

@@ -89,7 +89,7 @@
 
         #conteudo-itemm {
             min-width: 250px;
-            max-width: 800px;
+            max-width: 1200px;
             margin-top: 10px;
         }
         #conteudo-item {
