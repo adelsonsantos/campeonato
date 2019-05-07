@@ -138,7 +138,7 @@ class Tabela extends \yii\db\ActiveRecord
                 ->andWhere(['time_id_casa' => $idTime])
                 ->orWhere(['time_id_visitante' => $idTime])
                 ->andWhere(['temporada' => $temporada])
-                ->orderBy(['jogo_data' => SORT_DESC])
+                ->orderBy(['jogo_data' => SORT_ASC])
                 ->limit($limit)
                 ->all();
 
