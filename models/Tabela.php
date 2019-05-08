@@ -117,7 +117,7 @@ class Tabela extends \yii\db\ActiveRecord
                 'time_gols_saldo' => SORT_DESC,
                 'times.time_nome' => SORT_ASC
             ]
-        )->asArray()->where(['temporada' => $temporadaId])->all();
+        )->asArray()->where(['temporada' => $temporadaId])->andWhere(['status' => 0])->all();
 
         return $tabela;
     }
@@ -186,7 +186,7 @@ class Tabela extends \yii\db\ActiveRecord
         $corRebaixado = "#e60101";
         if ($contadorCor <= 4) {
             $cor = $corClassificado;
-        } elseif ($contadorCor < 11) {
+        } elseif ($contadorCor < 9) {
             $cor = $corPadrao;
         } else {
             $cor = $corRebaixado;
